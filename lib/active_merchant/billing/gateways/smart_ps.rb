@@ -38,6 +38,7 @@ module ActiveMerchant #:nodoc:
         add_address(post, options[:billing_address] || options[:address])
         add_address(post, options[:shipping_address], "shipping")
         add_customer_data(post, options)
+        add_product_sku(post, options)
         add_currency(post, money, options)
         add_processor(post, options)     
         commit('sale', money, post)
@@ -194,6 +195,10 @@ module ActiveMerchant #:nodoc:
       
       def add_sku(post,options)
         post["product_sku_#"] = options[:sku] || options["product_sku_#"]
+      end
+      
+      def add_product_sku(post,options)
+        post["product_sku_1"] = options[:sku] || options["product_sku_1"]
       end
       
       def add_transaction(post, auth)
