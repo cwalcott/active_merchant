@@ -27,6 +27,7 @@ module ActiveMerchant #:nodoc:
         add_address(post, options[:shipping_address], "shipping")
         add_customer_data(post, options)
         add_currency(post, money, options)
+        add_taxes(post, options)
         add_processor(post, options)
         commit('auth', money, post)
       end
@@ -40,6 +41,7 @@ module ActiveMerchant #:nodoc:
         add_customer_data(post, options)
         add_product_sku(post, options)
         add_currency(post, money, options)
+        add_taxes(post, options)
         add_processor(post, options)     
         commit('sale', money, post)
       end                       
@@ -68,10 +70,10 @@ module ActiveMerchant #:nodoc:
         commit('credit', money, post)
       end
       
-      def refund(auth, options = {})
+      def refund(money, auth, options = {})
         post = {}
         add_transaction(post, auth)
-        commit('refund', options.delete(:amount), post)
+        commit('refund', money, post)
       end
       
       
@@ -146,7 +148,11 @@ module ActiveMerchant #:nodoc:
       def add_currency(post, money, options)
         post[:currency] = options[:currency] || currency(money)
       end
-      
+
+      def add_taxes(post, options)
+        post[:tax] = amount(options[:tax])
+      end
+
       def add_processor(post, options)
         post[:processor] = options[:processor] unless options[:processor].nil?
       end
