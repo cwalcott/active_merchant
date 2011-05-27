@@ -106,6 +106,12 @@ module ActiveMerchant #:nodoc:
         add_customer_vault_id(post, vault_id)         
         commit(nil, nil, post)
       end
+      
+      def delete_recurring(transaction_id)
+        post = {}
+        post[:delete_recurring] = transaction_id
+        commit(nil, nil, post)
+      end
     
       # To match the other stored-value gateways, like TrustCommerce,
       # store and unstore need to be defined
